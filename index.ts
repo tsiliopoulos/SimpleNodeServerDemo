@@ -2,8 +2,8 @@ import http = require('http');
 import fs = require('fs');
 import path = require('path');
 
-const hostname:string = '127.0.0.1';
-const port:number = 3000;
+const hostname = process.env.HOST || 'localhost';
+const port = normalizePort(process.env.PORT || '3000');
 
 const server:http.Server = http.createServer((req:http.ServerRequest, res:http.ServerResponse) => {
   let filePath = "." + req.url;
@@ -60,3 +60,19 @@ const server:http.Server = http.createServer((req:http.ServerRequest, res:http.S
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}

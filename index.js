@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
-const hostname = '127.0.0.1';
-const port = 3000;
+const hostname = process.env.HOST || 'localhost';
+const port = normalizePort(process.env.PORT || '3000');
 const server = http.createServer((req, res) => {
     let filePath = "." + req.url;
     if (filePath == "./") {
@@ -55,4 +55,16 @@ const server = http.createServer((req, res) => {
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+    return false;
+}
 //# sourceMappingURL=index.js.map
